@@ -4,12 +4,11 @@ this.encounter <- {
         Type = "",
         Name = "",
         Icon = "ui/encounters/encounter.png",
-        SituationID = 0,
+        Cooldown = 7.0 * this.World.getTime().SecondsPerDay,
+        CooldownUntil = 0.0,
         Screens = [],
         ActiveScreen = null,
-        TimeOut = 0.0,
         IsActive = false,
-        IsStarted = false,
         HasBigButtons = false,
     },
 
@@ -33,21 +32,6 @@ this.encounter <- {
         return this.m.Name;
     }
 
-    function getBanner()
-    {
-        return "ui/banners/factions/banner_" + (this.World.FactionManager.getFaction(this.m.Faction).getBanner() < 10 ? "0" + this.World.FactionManager.getFaction(this.m.Faction).getBanner() : this.World.FactionManager.getFaction(this.m.Faction).getBanner()) + "s";
-    }
-
-    function getHome()
-    {
-        return this.m.Home;
-    }
-
-    function getSituationID()
-    {
-        return this.m.SituationID;
-    }
-
     function getActiveScreen()
     {
         return this.m.ActiveScreen;
@@ -58,16 +42,6 @@ this.encounter <- {
         return this.m.IsActive;
     }
 
-    function isStarted()
-    {
-        return this.m.IsStarted;
-    }
-
-    function isTimedOut()
-    {
-        return !this.m.IsActive && this.m.TimeOut != 0 && this.m.TimeOut <= this.Time.getVirtualTimeF();
-    }
-
     function hasBigButtons()
     {
         return this.m.HasBigButtons;
@@ -76,11 +50,6 @@ this.encounter <- {
     function setActive( _f )
     {
         this.m.IsActive = _f;
-    }
-
-    function setFaction( _f )
-    {
-        this.m.Faction = _f;
     }
 
     function create()
@@ -94,12 +63,7 @@ this.encounter <- {
 
     function start()
     {
-        this.m.IsStarted = true;
 
-        if (this.m.Home == null)
-        {
-            this.setHome(this.World.State.getCurrentTown());
-        }
     }
 
     function getActiveScreen() {
@@ -121,7 +85,7 @@ this.encounter <- {
             }
         }
 
-        this.logError("Screen \"" + _id + "\" not found for contract \"" + this.m.Type + "\".");
+        this.logError("Screen \"" + _id + "\" not found for encounter \"" + this.m.Type + "\".");
         return null;
     }
 
@@ -392,6 +356,10 @@ this.encounter <- {
         return false;
     }
 
+    function isOnCooldown() {
+        return this.m.CooldownUntil > this.Time.getVirtualTimeF()
+    }
+
     function clear()
     {
         this.onClear();
@@ -403,11 +371,6 @@ this.encounter <- {
 
     function onClear()
     {
-    }
-
-    function onIsValid()
-    {
-        return true;
     }
 
     function colorizeDone( _str )
@@ -423,6 +386,7 @@ this.encounter <- {
     function fire()
     {
         this.setScreen(this.m.Screens[0]);
+        this.m.CooldownUntil = this.Time.getVirtualTimeF() + this.m.Cooldown;
     }
 
     function onSerialize( _out )

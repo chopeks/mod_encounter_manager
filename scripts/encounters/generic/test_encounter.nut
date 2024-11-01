@@ -50,6 +50,6 @@ this.test_encounter <- this.inherit("scripts/encounters/encounter", {
     }
 
     function isValid(_settlement) {
-        return true;
+        return !isOnCooldown();
     }
 })

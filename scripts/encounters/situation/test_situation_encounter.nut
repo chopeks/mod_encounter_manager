@@ -31,6 +31,6 @@ this.test_situation_encounter <- this.inherit("scripts/encounters/encounter", {
     function isValid(_settlement) {
         if (!_settlement.hasSituation("situation.greenskins"))
             return false;
-        return true;
+        return !isOnCooldown();
     }
 })
