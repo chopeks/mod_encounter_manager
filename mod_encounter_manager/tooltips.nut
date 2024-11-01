@@ -1,8 +1,8 @@
 ::ModEncounterManager.getEncounterUIData <- function(_data) {
-	local encounterId = _data.encounterId;
+	local encounterType = _data.encounterType;
 	local title = "Error"
 	foreach (e in this.World.EncounterManager.m.SettlementEncounters) {
-		if (e.getID() == encounterId) {
+		if (e.getType() == encounterType) {
 			title = e.getName();
 			break;
 		}

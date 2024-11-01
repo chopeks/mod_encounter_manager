@@ -8,7 +8,7 @@ local mod = ::Hooks.register(::ModEncounterManager.ID, ::ModEncounterManager.Ver
 
 mod.require("mod_msu >= 1.2.6", "mod_modern_hooks >= 0.4.0");
 
-mod.queue(">mod_msu", ">mod_modern_hooks", function() {
+mod.queue(">mod_msu", ">mod_modern_hooks", ">mod_legends", function() {
 	::ModEncounterManager.Mod <- ::MSU.Class.Mod(::ModEncounterManager.ID, ::ModEncounterManager.Version, ::ModEncounterManager.Name);
 
 	::Hooks.registerLateJS("ui/mods/mod_encounter_manager.js");

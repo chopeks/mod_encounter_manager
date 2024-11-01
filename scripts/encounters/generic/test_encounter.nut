@@ -13,12 +13,12 @@ this.test_encounter <- this.inherit("scripts/encounters/encounter", {
         this.m.Screens.extend([{
             ID = "Task",
             Title = "Aye mate, here we go",
-            Text = "Somehow it even showed",
+            Text = "Put some jokes here or something, idk.",
             Image = "",
             List = [],
             Options = [
             {
-                Text = "Enter",
+                Text = "Click me for free puppies!",
                 function getResult() {
                     return "screen2";
                 }
@@ -33,20 +33,23 @@ this.test_encounter <- this.inherit("scripts/encounters/encounter", {
             function start() {}
         }, {
             ID = "screen2",
-            Title = "Aye mate, that's 2nd screen",
-            Text = "Now push that button",
+            Title = "Aye mate, that's 2nd screen!",
+            Text = "No puppies, but 2nd screen! Woohoo, now push that button",
             Image = "",
             List = [],
             Options = [
             {
-                Text = "Let's go!",
+                Text = "Bummer, let's go!",
                 function getResult() {
                     return 0;
                 }
-
             }
             ],
             function start() {}
         }]);
+    }
+
+    function isValid(_settlement) {
+        return true;
     }
 })

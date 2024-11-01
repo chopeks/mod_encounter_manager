@@ -6,16 +6,20 @@ this.encounter_manager <- {
     },
 
     function onInit() {
-        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/triggers/settlement/")) {
-            this.m.SettlementEvents.push(this.new(scriptFile));
+        // disable that for now
+//        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/triggers/settlement/")) {
+//            this.m.SettlementEvents.push(this.new(scriptFile));
+//        }
+//        ::logInfo("initialized SettlementEvents, len=" +  this.m.SettlementEvents.len());
+        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/encounters/events")) {
+            this.m.SettlementEncounters.push(this.new(scriptFile));
         }
-        ::logInfo("initialized SettlementEvents, len=" +  this.m.SettlementEvents.len());
         foreach(i, scriptFile in this.IO.enumerateFiles("scripts/encounters/generic")) {
             this.m.SettlementEncounters.push(this.new(scriptFile));
         }
-//        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/encounters/situation")) {
-//            this.m.SettlementEncounters.push(this.new(scriptFile));
-//        }
+        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/encounters/situation")) {
+            this.m.SettlementEncounters.push(this.new(scriptFile));
+        }
         ::logInfo("initialized SettlementEncounters, len=" +  this.m.SettlementEncounters.len());
     }
 

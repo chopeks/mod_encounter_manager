@@ -72,7 +72,7 @@ WorldTownScreenMainDialogModule.prototype.createEncounter = function (_data, _i,
         self.mParent.notifyBackendEncounterClicked(_i);
     });
 
-    encounter.bindTooltip({ contentType: 'msu-generic', modId: mod_encounter_manager.ID, elementId: "EncounterElement", encounterId: _data.EncounterId});
+    encounter.bindTooltip({ contentType: 'msu-generic', modId: mod_encounter_manager.ID, elementId: "EncounterElement", encounterType: _data.Type});
 }
 
 

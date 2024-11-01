@@ -1,3 +1,5 @@
+// todo, not used for now, decide what to do about it
+// while it's kinda ok, it's a lot of work tho
 this.vala_recruitment <- this.inherit("scripts/events/event", {
 	m = {
 		Vala = null,

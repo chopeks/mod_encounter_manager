@@ -21,8 +21,6 @@ this.fav_enemy_swordmaster_encounter <- this.inherit("scripts/encounters/encount
                 function getResult() {
                     this.World.State.getMenuStack().popAll(true);
                     this.Time.scheduleEvent(this.TimeUnit.Virtual, 1, function ( _tag ) {
-                        local event = this.World.Events.getEvent("event.legend_swordmaster_fav_enemy");
-                        event.onUpdateScore();
                         this.World.Events.fire("event.legend_swordmaster_fav_enemy");
                     }, null);
                     this.Time.scheduleEvent(this.TimeUnit.Real, 500, function ( _tag ) {
@@ -45,29 +43,11 @@ this.fav_enemy_swordmaster_encounter <- this.inherit("scripts/encounters/encount
     }
 
     function isValid(_settlement) {
-        local candidates = [];
-        foreach( bro in this.World.getPlayerRoster().getAll()) {
-            if (!bro.getSkills().hasSkill("perk.legend_favoured_enemy_swordmaster")) {
-                continue;
-            }
-
-            if (bro.getLevel() < 11) {
-                continue;
-            }
-
-            local stats = this.Const.LegendMod.GetFavoriteEnemyStats(bro, this.Const.LegendMod.FavoriteSwordmaster);
-
-            while (stats.Strength < this.m.MinStrength)	{
-                this.logInfo("BRO " + bro.getName() + " Min strength < m.MinStrength : " + stats.Strength);
-            }
-
-            this.m.Stats = this.Math.floor(stats.Strength);
-            candidates.push(bro);
-        }
-
-        if (candidates.len() == 0) {
+        local event = this.World.Events.getEvent("event.legend_swordmaster_fav_enemy");
+        if (event == null) {
             return false;
         }
-        return true;
+        event.onUpdateScore();
+        return event.m.isValidForEncounter;
     }
 })
