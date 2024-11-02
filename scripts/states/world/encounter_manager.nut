@@ -24,8 +24,11 @@ this.encounter_manager <- {
     }
 
     function clear() {
+        ::logInfo("clearing event manager, events atm: " + this.m.SettlementEncounters.len());
         this.m.ActiveEvent = null;
-        this.m.SettlementEvents = [];
+        foreach(e in this.m.SettlementEncounters) {
+            e.reset();
+        }
     }
 
     function getEncounter(_typeID) {

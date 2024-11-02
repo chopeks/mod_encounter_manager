@@ -360,8 +360,14 @@ this.encounter <- {
         return this.m.CooldownUntil > this.Time.getVirtualTimeF()
     }
 
+    function reset()
+    {
+        this.clear();
+    }
+
     function clear()
     {
+        this.m.CooldownUntil = 0;
         this.onClear();
     }
 
