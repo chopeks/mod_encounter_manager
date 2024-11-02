@@ -362,12 +362,12 @@ this.encounter <- {
 
     function reset()
     {
+        this.m.CooldownUntil = 0;
         this.clear();
     }
 
     function clear()
     {
-        this.m.CooldownUntil = 0;
         this.onClear();
     }
 

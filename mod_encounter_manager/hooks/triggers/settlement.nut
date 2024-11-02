@@ -26,22 +26,17 @@
         local list = [];
         foreach (e in this.World.Encounters.m.SettlementEncounters) {
             if (e.isValid(this)) {
-                ::logInfo("encounter valid " + e.getType());
                 list.push(e);
-            } else {
-                ::logInfo("encounter not valid " + e.getType());
             }
         }
 
         local count = this.Math.rand(3, 5);
         while(list.len() > count) {
             local r = this.Math.rand(0, list.len() - 1);
-            ::logInfo("discarding encounter " + list[r].getType());
             list.remove(r);
         }
         this.m.SettlementEncounters.clear();
         foreach (e in list) {
-            ::logInfo("adding encounter " + e.getType());
             this.m.SettlementEncounters.push(e);
         }
         this.m.SettlementEncountersCooldownUntil = this.Time.getVirtualTimeF() + (5 * this.World.getTime().SecondsPerDay);

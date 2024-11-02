@@ -8,6 +8,7 @@
     background-color: #460A0A;
 }
 
+/* 48rem is around the center, 58px is image size (56px) + 2px margin*/
 .world-town-screen > .l-main-dialog-container .encounter0
 {
     position: absolute;
@@ -19,61 +20,26 @@
 {
     position: absolute;
     top: 1.5rem;
-    right: 43.0rem;
+    right: calc(48rem - 58px);
 }
 
 .world-town-screen > .l-main-dialog-container .encounter2
 {
     position: absolute;
     top: 1.5rem;
-    right: 53.0rem;
+    right: calc(48rem + 58px);
 }
 
 .world-town-screen > .l-main-dialog-container .encounter3
 {
     position: absolute;
     top: 1.5rem;
-    right: 38.0rem;
+    right: calc(48rem - 2*58px);
 }
 
 .world-town-screen > .l-main-dialog-container .encounter4
 {
     position: absolute;
     top: 1.5rem;
-    right: 58.0rem;
-}
-
-.world-town-screen > .l-main-dialog-container .encounter5
-{
-    position: absolute;
-    top: 1.5rem;
-    right: 32.0rem;
-}
-
-.world-town-screen > .l-main-dialog-container .encounter6
-{
-    position: absolute;
-    top: 1.5rem;
-    right: 39.0rem;
-}
-
-.world-town-screen > .l-main-dialog-container .encounter7
-{
-    position: absolute;
-    top: 1.5rem;
-    right: 45.0rem;
-}
-
-.world-town-screen > .l-main-dialog-container .encounter8
-{
-    position: absolute;
-    top: 1.5rem;
-    right: 51.0rem;
-}
-
-.world-town-screen > .l-main-dialog-container .encounter9
-{
-    position: absolute;
-    top: 1.5rem;
-    right: 57.0rem;
+    right: calc(48rem + 2*58px);
 }
