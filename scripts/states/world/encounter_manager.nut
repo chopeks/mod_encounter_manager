@@ -28,6 +28,14 @@ this.encounter_manager <- {
         this.m.SettlementEvents = [];
     }
 
+    function getEncounter(_typeID) {
+        foreach (e in this.m.SettlementEncounters) {
+            if (e.getType() == _typeID)
+                return e;
+        }
+        return null;
+    }
+
     /**
      * Decides if event on settlement enter should be shown or not
      */
@@ -154,11 +162,24 @@ this.encounter_manager <- {
 
     function onSerialize( _out )
     {
-        ::logInfo("encounter_manager.onSerialize");
+        _out.writeU32(this.m.SettlementEncounters.len());
+        foreach(e in this.m.SettlementEncounters) {
+            _out.writeString(e.getType());
+            e.onSerialize(_out);
+        }
     }
 
     function onDeserialize( _in )
     {
-        ::logInfo("encounter_manager.onDeserialize");
+        local numEncounters = _in.readU32();
+        for( local i = 0; i < numEncounters; i = ++i ) {
+            local e = this.getEncounter(_in.readString());
+            if (e != null) {
+                e.onDeserialize(_in);
+            } else {
+                // this here has to be the same as encounter's onDeserialize, to skip all stored data
+                _in.readF32();
+            }
+        }
     }
 };

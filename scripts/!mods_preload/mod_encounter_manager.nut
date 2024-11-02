@@ -1,7 +1,7 @@
 ::ModEncounterManager <- {
 	ID = "mod_encounter_manager",
 	Name = "Trigger event manager",
-	Version = "0.1.0"
+	Version = "0.1.1"
 }
 local mod = ::Hooks.register(::ModEncounterManager.ID, ::ModEncounterManager.Version, ::ModEncounterManager.Name);
 ::ModEncounterManager.Hooks <- mod;

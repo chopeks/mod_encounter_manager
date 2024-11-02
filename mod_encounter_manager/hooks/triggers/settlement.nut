@@ -1,14 +1,27 @@
 ::ModEncounterManager.Hooks.hook("scripts/entity/world/settlement", function(q) {
     /** New field for events that should happens on settlement enter */
-    q.m.SettlementTriggers <- []
+    q.m.SettlementTriggers <- [];
     /** New field for settlements encounters */
-    q.m.SettlementEncounters <- []
+    q.m.SettlementEncountersCooldownUntil <- 0.0;
+    q.m.SettlementEncounters <- [];
 
     /**
      * Updates encounters in the town.
      */
     q.updateEncounters <- function() {
-        // todo, this needs some time based check too, idk how to do it
+        if (this.m.SettlementEncountersCooldownUntil > this.Time.getVirtualTimeF()) {
+            local notValid = [];
+            foreach (e in this.m.SettlementEncounters) {
+                if (!e.isValid(this))
+                    notValid.push(e);
+            }
+            foreach (e in notValid) {
+                ::logInfo("encounter became non valid " + e.getType());
+                ::MSU.Array.removeByValue(this.m.SettlementEncounters, e);
+            }
+            ::logInfo("cooldown still on, skipping the creation");
+            return;
+        }
         local list = [];
         foreach (e in this.World.EncounterManager.m.SettlementEncounters) {
             if (e.isValid(this)) {
@@ -30,6 +43,7 @@
             ::logInfo("adding encounter " + e.getType());
             this.m.SettlementEncounters.push(e);
         }
+        this.m.SettlementEncountersCooldownUntil = this.Time.getVirtualTimeF() + (5 * this.World.getTime().SecondsPerDay);
     }
 
     /**
@@ -54,7 +68,7 @@
     }
 
     /**
-     * Injects settlement encounters data for the ui
+     * Injects settlement encounters into data for the ui
      */
     q.getUIInformation = @(__original) function() {
         local result = __original();
@@ -68,5 +82,28 @@
             }
         }
         return result;
+    }
+
+    q.onSerialize = @(__original) function (_out) {
+        __original(_out);
+        _out.writeF32(this.m.SettlementEncountersCooldownUntil);
+        _out.writeU32(this.m.SettlementEncounters.len());
+        foreach(e in this.m.SettlementEncounters) {
+            _out.writeString(e.getType());
+        }
+    }
+
+    q.onDeserialize = @(__original) function (_in) {
+        __original(_in);
+        if (::ModEncounterManager.Mod.Serialization.isSavedVersionAtLeast("0.1.1", _in.getMetaData())) {
+            this.m.SettlementEncountersCooldownUntil = _in.readF32();
+            local size = _in.readU32();
+            for( local i = 0; i < size; i = ++i ) {
+                local e = this.World.EncounterManager.getEncounter(_in.readString());
+                if (e != null) {
+                    this.m.SettlementEncounters.push(e);
+                }
+            }
+        }
     }
 });

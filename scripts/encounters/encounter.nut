@@ -389,12 +389,12 @@ this.encounter <- {
         this.m.CooldownUntil = this.Time.getVirtualTimeF() + this.m.Cooldown;
     }
 
-    function onSerialize( _out )
-    {
+    function onSerialize( _out ) {
+        _out.writeF32(this.m.CooldownUntil);
     }
 
-    function onDeserialize( _in )
-    {
+    function onDeserialize( _in ) {
+        this.m.CooldownUntil = _in.readF32();
     }
 
 };
