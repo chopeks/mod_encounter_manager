@@ -50,6 +50,7 @@
      */
     q.onEncounterClicked <- function(_i, _townScreen){
         this.World.EncounterManager.fireEncounter(this.m.SettlementEncounters[_i]);
+        this.m.SettlementEncounters.remove(_i);
     }
 
     /**

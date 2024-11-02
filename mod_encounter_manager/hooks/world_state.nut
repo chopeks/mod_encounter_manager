@@ -35,6 +35,7 @@
                 this.m.EventScreen.hide();
                 this.m.WorldTownScreen.showLastActiveDialog();
                 this.m.EventScreen.setIsEncounter(false);
+                this.m.WorldTownScreen.refresh();
             }, function ()
             {
                 return false;
