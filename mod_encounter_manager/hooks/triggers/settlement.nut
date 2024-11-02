@@ -22,8 +22,9 @@
             ::logInfo("cooldown still on, skipping the creation");
             return;
         }
+
         local list = [];
-        foreach (e in this.World.EncounterManager.m.SettlementEncounters) {
+        foreach (e in this.World.Encounters.m.SettlementEncounters) {
             if (e.isValid(this)) {
                 ::logInfo("encounter valid " + e.getType());
                 list.push(e);
@@ -52,7 +53,7 @@
     q.onEnter = @(__original) function () {
         local ret = __original();
         this.updateEncounters();
-        if(::World.EncounterManager.onSettlementEntered(this)) {
+        if(::World.Encounters.onSettlementEntered(this)) {
             ::World.State.m.LastEnteredTown = null;
             return false;
         }
@@ -63,7 +64,7 @@
      * Callback function for UI, called on encounter icon click
      */
     q.onEncounterClicked <- function(_i, _townScreen){
-        this.World.EncounterManager.fireEncounter(this.m.SettlementEncounters[_i]);
+        this.World.Encounters.fireEncounter(this.m.SettlementEncounters[_i]);
         this.m.SettlementEncounters.remove(_i);
     }
 
@@ -99,7 +100,7 @@
             this.m.SettlementEncountersCooldownUntil = _in.readF32();
             local size = _in.readU32();
             for( local i = 0; i < size; i = ++i ) {
-                local e = this.World.EncounterManager.getEncounter(_in.readString());
+                local e = this.World.Encounters.getEncounter(_in.readString());
                 if (e != null) {
                     this.m.SettlementEncounters.push(e);
                 }

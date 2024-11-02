@@ -1,18 +1,18 @@
 ::ModEncounterManager.Hooks.hook("scripts/states/world_state", function(q) {
-    q.m.EncounterManager <- null;
+    q.m.Encounters <- null;
 
     q.onInit = @(__original) function () {
-        this.m.EncounterManager = this.new("scripts/states/world/encounter_manager");
-        this.World.EncounterManager <- this.WeakTableRef(this.m.EncounterManager);
-        this.m.EncounterManager.onInit();
+        this.m.Encounters = this.new("scripts/states/world/encounter_manager");
+        this.World.Encounters <- this.WeakTableRef(this.m.Encounters);
+        this.m.Encounters.onInit();
         __original();
     }
 
     q.onFinish = @(__original) function() {
         __original();
-        this.m.EncounterManager.clear();
-        this.m.EncounterManager = null;
-        this.World.EncounterManager = null;
+        this.m.Encounters.clear();
+        this.m.Encounters = null;
+        this.World.Encounters = null;
     }
 
     /**
@@ -44,13 +44,13 @@
     }
 
     q.onSerialize = @(__original) function (_out) {
-        this.m.EncounterManager.onSerialize(_out);
+        this.m.Encounters.onSerialize(_out);
         __original(_out);
     }
 
     q.onDeserialize = @(__original) function (_in) {
         if (::ModEncounterManager.Mod.Serialization.isSavedVersionAtLeast("0.1.0", _in.getMetaData())) {
-            this.m.EncounterManager.onDeserialize(_in);
+            this.m.Encounters.onDeserialize(_in);
         }
         __original(_in);
     }

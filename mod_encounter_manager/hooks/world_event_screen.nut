@@ -12,7 +12,7 @@
      */
     q.onButtonPressed = @(__original) function (_buttonID) {
         if (this.m.IsEncounter) {
-            this.World.EncounterManager.processInput(_buttonID);
+            this.World.Encounters.processInput(_buttonID);
         } else {
             __original(_buttonID);
         }
