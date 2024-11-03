@@ -2,7 +2,8 @@ this.encounter_manager <- {
     m = {
         ActiveEvent = null,
         SettlementEvents = [],
-        SettlementEncounters = []
+        SettlementEncounters = [],
+        CampEncounters = []
     },
 
     function onInit() {
@@ -21,6 +22,12 @@ this.encounter_manager <- {
             this.m.SettlementEncounters.push(this.new(scriptFile));
         }
         ::logInfo("initialized SettlementEncounters, len=" +  this.m.SettlementEncounters.len());
+
+        foreach(i, scriptFile in this.IO.enumerateFiles("scripts/encounters/camp")) {
+            this.m.CampEncounters.push(this.new(scriptFile));
+        }
+        ::logInfo("initialized CampEncounters, len=" +  this.m.CampEncounters.len());
+
     }
 
     function clear() {
@@ -29,10 +36,17 @@ this.encounter_manager <- {
         foreach(e in this.m.SettlementEncounters) {
             e.reset();
         }
+        foreach(e in this.m.CampEncounters) {
+            e.reset();
+        }
     }
 
     function getEncounter(_typeID) {
         foreach (e in this.m.SettlementEncounters) {
+            if (e.getType() == _typeID)
+                return e;
+        }
+        foreach (e in this.m.CampEncounters) {
             if (e.getType() == _typeID)
                 return e;
         }
@@ -160,8 +174,26 @@ this.encounter_manager <- {
         this.m.ActiveEvent.fire();
 
         this.World.State.showEncounterScreenFromTown(_encounter);
+        return true;
     }
 
+    function fireCampEncounter(_encounter, _update = true) {
+//        if (_encounter != null && this.m.ActiveEvent != null && this.m.ActiveEvent.getID() != _encounter.getID()) {
+//            this.logInfo("Failed to fire event - another event with id \'" + this.m.ActiveEvent.getID() + "\' is already queued.");
+//            return false;
+//        }
+//
+////        if (_update) {
+////            _encounter.update();
+////        }
+//
+//        this.m.ActiveEvent = _encounter;
+//        this.m.ActiveEvent.fire();
+//
+//        this.World.State.showEncounterScreenFromTown(_encounter);
+//        return true;
+        return false;
+    }
 
     function onSerialize( _out )
     {
