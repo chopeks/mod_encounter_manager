@@ -36,7 +36,7 @@ this._tips_encounter <- this.inherit("scripts/encounters/encounter", {
         }]);
     }
 
-    function isValid(_settlement) {
+    function isValid(_camp) {
         return false;
     }
 })

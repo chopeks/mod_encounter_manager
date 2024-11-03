@@ -5,7 +5,7 @@ this.recruitment_vala_encounter <- this.inherit("scripts/encounters/encounter", 
     function create() {
         this.createScreens();
         this.m.Type = "encounter.recruitment_vala_encounter";
-        this.m.Name = "Recruitment effort";
+        this.m.Name = "recruitment_vala_encounter";
     }
 
     function createScreens() {

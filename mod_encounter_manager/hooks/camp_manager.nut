@@ -23,6 +23,7 @@
 
         local list = [this.World.Encounters.m.CampEncounters[0]];
         foreach (e in this.World.Encounters.m.CampEncounters) {
+            ::logInfo("what is it = " + e.getName());
             if (e.isValid(this)) {
                 list.push(e);
             }

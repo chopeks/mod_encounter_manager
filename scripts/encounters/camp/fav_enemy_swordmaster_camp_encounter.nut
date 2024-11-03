@@ -5,7 +5,7 @@ this.fav_enemy_swordmaster_camp_encounter <- this.inherit("scripts/encounters/en
     function create() {
         this.createScreens();
         this.m.Type = "encounter.fav_enemy_swordmaster_camp_encounter";
-        this.m.Name = "Swordmaster";
+        this.m.Name = "fav_enemy_swordmaster_camp_encounter";
     }
 
     function createScreens() {
@@ -36,7 +36,7 @@ this.fav_enemy_swordmaster_camp_encounter <- this.inherit("scripts/encounters/en
         }]);
     }
 
-    function isValid(_settlement) {
+    function isValid(_camp) {
         local event = this.World.Events.getEvent("event.legend_swordmaster_fav_enemy");
         if (event == null) {
             return false;
