@@ -5,7 +5,7 @@ this.test_camp_encounter <- this.inherit("scripts/encounters/encounter", {
     function create() {
         this.createScreens();
         this.m.Type = "encounter.test_camp_encounter";
-        this.m.Name = "Scout report";
+        this.m.Name = "Scout report from camp";
 //        this.m.Icon = "ui/encounters/encounter.png"
     }
 
