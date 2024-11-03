@@ -43,6 +43,34 @@
         }
     }
 
+    /**
+     * Adds convenience method to world state to mimic original
+     * Shows encouter dialog while in camp
+     */
+    q.showEncounterScreenFromCamp <- function (_encounter, _playSound = true) {
+        if (!this.m.EventScreen.isVisible() && !this.m.EventScreen.isAnimating())
+        {
+            if (_playSound && this.Const.Events.GlobalSound != "")
+            {
+                this.Sound.play(this.Const.Events.GlobalSound, 1.0);
+            }
+
+            this.m.CampScreen.hide();
+            this.m.EventScreen.setIsEncounter(true);
+            this.m.EventScreen.show(_encounter);
+            this.m.MenuStack.push(function ()
+            {
+                this.m.EventScreen.hide();
+                this.m.CampScreen.show();
+                this.m.EventScreen.setIsEncounter(false);
+                this.m.WorldTownScreen.refresh();
+            }, function ()
+            {
+                return false;
+            });
+        }
+    }
+
     q.onSerialize = @(__original) function (_out) {
         this.m.Encounters.onSerialize(_out);
         __original(_out);

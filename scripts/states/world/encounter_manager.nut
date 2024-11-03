@@ -1,6 +1,7 @@
 this.encounter_manager <- {
     m = {
         ActiveEvent = null,
+        ActiveCampEvent = null,
         SettlementEvents = [],
         SettlementEncounters = [],
         CampEncounters = []
@@ -82,18 +83,29 @@ this.encounter_manager <- {
      * Encounter click handler
      */
     function processInput(_buttonID) {
-        if (this.m.ActiveEvent == null) {
-            return false;
+        if (this.m.ActiveEvent != null) {
+            if (this.m.ActiveEvent.processInput(_buttonID)) {
+                this.World.State.getEventScreen().show(this.m.ActiveEvent)
+                return false;
+            } else {
+                this.m.ActiveEvent.clear();
+                this.m.ActiveEvent = null;
+                this.World.State.getMenuStack().pop(true);
+                return true;
+            }
         }
-        if (this.m.ActiveEvent.processInput(_buttonID)) {
-            this.World.State.getEventScreen().show(this.m.ActiveEvent)
-            return false;
-        } else {
-            this.m.ActiveEvent.clear();
-            this.m.ActiveEvent = null;
-            this.World.State.getMenuStack().pop(true);
-            return true;
+        if (this.m.ActiveCampEvent != null) {
+            if (this.m.ActiveCampEvent.processInput(_buttonID)) {
+                this.World.State.getEventScreen().show(this.m.ActiveCampEvent)
+                return false;
+            } else {
+                this.m.ActiveCampEvent.clear();
+                this.m.ActiveCampEvent = null;
+                this.World.State.getMenuStack().pop(true);
+                return true;
+            }
         }
+        return false;
     }
 
     function canFireEvent() {
@@ -111,6 +123,10 @@ this.encounter_manager <- {
         }
 
         if (this.m.ActiveEvent != null) {
+            return false;
+        }
+
+        if (this.m.ActiveCampEvent != null) {
             return false;
         }
 
@@ -178,21 +194,20 @@ this.encounter_manager <- {
     }
 
     function fireCampEncounter(_encounter, _update = true) {
-//        if (_encounter != null && this.m.ActiveEvent != null && this.m.ActiveEvent.getID() != _encounter.getID()) {
-//            this.logInfo("Failed to fire event - another event with id \'" + this.m.ActiveEvent.getID() + "\' is already queued.");
-//            return false;
+        if (_encounter != null && this.m.ActiveCampEvent != null && this.m.ActiveCampEvent.getID() != _encounter.getID()) {
+            this.logInfo("Failed to fire event - another event with id \'" + this.m.ActiveCampEvent.getID() + "\' is already queued.");
+            return false;
+        }
+
+//        if (_update) {
+//            _encounter.update();
 //        }
-//
-////        if (_update) {
-////            _encounter.update();
-////        }
-//
-//        this.m.ActiveEvent = _encounter;
-//        this.m.ActiveEvent.fire();
-//
-//        this.World.State.showEncounterScreenFromTown(_encounter);
-//        return true;
-        return false;
+
+        this.m.ActiveCampEvent = _encounter;
+        this.m.ActiveCampEvent.fire();
+
+        this.World.State.showEncounterScreenFromCamp(_encounter);
+        return true;
     }
 
     function onSerialize( _out )
