@@ -9,8 +9,8 @@
     q.updateEncounters <- function() {
         if (this.m.CampEncountersCooldownUntil > this.Time.getVirtualTimeF()) {
             local notValid = [];
-            foreach (e in this.m.CampEncounters) {
-                if (!e.isValid(this))
+            foreach (i, e in this.m.CampEncounters) {
+                if (i > 0 && !e.isValid(this))
                     notValid.push(e);
             }
             foreach (e in notValid) {
@@ -21,7 +21,7 @@
             return;
         }
 
-        local list = [];
+        local list = [this.World.Encounters.m.CampEncounters[0]];
         foreach (e in this.World.Encounters.m.CampEncounters) {
             if (e.isValid(this)) {
                 list.push(e);
@@ -29,8 +29,8 @@
         }
 
         local count = this.Math.rand(3, 5);
-        while(list.len() > count) {
-            local r = this.Math.rand(0, list.len() - 1);
+        while(list.len() > count + 1) {
+            local r = this.Math.rand(1, list.len() - 1);
             list.remove(r);
         }
         this.m.CampEncounters.clear();
@@ -54,7 +54,9 @@
      */
     q.onEncounterClicked <- function(_i, _townScreen){
         this.World.Encounters.fireCampEncounter(this.m.CampEncounters[_i]);
-        this.m.CampEncounters.remove(_i);
+        if (_i > 0) { // 1st are tips, don't remove them
+            this.m.CampEncounters.remove(_i);
+        }
     }
 
     /**
@@ -159,6 +161,11 @@
             }
         }
         return result;
+    }
+
+    q.clear = @(__original) function() {
+        this.m.CampEncountersCooldownUntil = 0.0;
+        this.m.CampEncounters = [];
     }
 
     q.onSerialize = @(__original) function (_out) {

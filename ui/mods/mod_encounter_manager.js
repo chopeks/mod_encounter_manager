@@ -74,16 +74,13 @@ WorldTownScreenMainDialogModule.prototype.loadFromData = function (_data){
 //endregion
 
 //region camp
-// todo, figure out how to wait for this prototype to be created? it says it's not there
 /**
  * Called on encounter click
  * @param _data
  */
-// CampScreenMainDialogModule.prototype.notifyBackendEncounterClicked = function (_data) {
-//     if(this.mSQHandle !== null) {
-//         SQ.call(this.mSQHandle, 'onEncounterClicked', _data);
-//     }
-// };
+CampScreenMainDialogModule.prototype.notifyBackendEncounterClicked = function (_data) {
+    SQ.call(this.mSQHandle, 'onEncounterClicked', _data);
+};
 
 /**
  * Creates single encounter
@@ -91,58 +88,55 @@ WorldTownScreenMainDialogModule.prototype.loadFromData = function (_data){
  * @param _i index in array
  * @param _content html
  */
-// CampScreenMainDialogModule.prototype.createEncounter = function (_data, _i, _content) {
-//     console.error("creating encounter now...");
-//     if (_data == null) {
-//         return;
-//     }
-//
-//     var self = this;
-//     var classes = 'display-block is-status-effect encounter' + _i;
-//     var encounter = _content.createImage(Path.GFX + _data.Icon, null, null, classes);
-//
-//     encounter.click(function (_event) {
-//         self.mParent.notifyBackendEncounterClicked(_i);
-//     });
-//
-//     encounter.bindTooltip({ contentType: 'msu-generic', modId: mod_encounter_manager.ID, elementId: "EncounterElement", encounterType: _data.Type});
-// };
+CampScreenMainDialogModule.prototype.createEncounter = function (_data, _i, _content) {
+    if (_data == null) {
+        return;
+    }
+
+    var self = this;
+    var classes = 'display-block is-status-effect encounter' + _i;
+    var encounter = _content.createImage(Path.GFX + _data.Icon, null, null, classes);
+
+    encounter.click(function (_event) {
+        self.notifyBackendEncounterClicked(_i);
+    });
+
+    encounter.bindTooltip({ contentType: 'msu-generic', modId: mod_encounter_manager.ID, elementId: "EncounterElement", encounterType: _data.Type});
+};
 
 /**
  * Updates list of encounters
  * @param _data
  */
-// CampScreenMainDialogModule.prototype.updateEncounters = function (_data)
-// {
-//     console.error("updateEncounters now...");
-//     var content = this.mDialogContainer.findDialogContentContainer();
-//
-//     for (var i = 0; i < 10; ++i) {
-//         for (var j = 0; j < 3; ++j) {
-//             var c = content.find('.encounter' + i + ':first');
-//
-//             if (c !== undefined && c !== null) {
-//                 c.unbindTooltip();
-//                 c.remove();
-//             }
-//         }
-//     }
-//
-//     if (_data.Encounters.length !== 0) {
-//         for (var i = 0; i < _data.Encounters.length; ++i) {
-//             this.createEncounter(_data.Encounters[i], i, content);
-//         }
-//     }
-// };
+CampScreenMainDialogModule.prototype.updateEncounters = function (_data)
+{
+    var content = this.mDialogContainer.findDialogContentContainer();
+
+    for (var i = 0; i < 10; ++i) {
+        for (var j = 0; j < 3; ++j) {
+            var c = content.find('.encounter' + i + ':first');
+
+            if (c !== undefined && c !== null) {
+                c.unbindTooltip();
+                c.remove();
+            }
+        }
+    }
+
+    if (_data.Encounters.length !== 0) {
+        for (var i = 0; i < _data.Encounters.length; ++i) {
+            this.createEncounter(_data.Encounters[i], i, content);
+        }
+    }
+};
 //endregion
 
 //region camp hooks
-// mod_encounter_manager.Hooks.camp_loadEncountersFromData = CampScreen.prototype.loadFromData;
-// CampScreen.prototype.loadFromData = function (_data){
-//     console.error("is it called? loadFromData")
-//     mod_encounter_manager.Hooks.camp_loadEncountersFromData.call(this, _data);
-//     if ('Encounters' in _data && _data['Encounters'] !== null) {
-//         this.updateEncounters(_data);
-//     }
-// };
+mod_encounter_manager.Hooks.camp_loadEncountersFromData = CampScreenMainDialogModule.prototype.loadFromData;
+CampScreenMainDialogModule.prototype.loadFromData = function (_data){
+    mod_encounter_manager.Hooks.camp_loadEncountersFromData.call(this, _data);
+    if ('Encounters' in _data && _data['Encounters'] !== null) {
+        this.updateEncounters(_data);
+    }
+};
 //endregion

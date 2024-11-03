@@ -1,6 +1,5 @@
 this.test_camp_encounter <- this.inherit("scripts/encounters/encounter", {
     m = {
-
     },
     function create() {
         this.createScreens();
