@@ -174,6 +174,7 @@
         _out.writeU32(this.m.CampEncounters.len());
         foreach(e in this.m.CampEncounters) {
             _out.writeString(e.getType());
+            e.onSerialize(_out)
         }
     }
 
@@ -186,6 +187,8 @@
                 local e = this.World.Encounters.getEncounter(_in.readString());
                 if (e != null) {
                     this.m.CampEncounters.push(e);
+                } else {
+                    _in.readF32(); // same as in encounter
                 }
             }
         }

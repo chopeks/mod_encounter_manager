@@ -221,14 +221,16 @@ this.encounter_manager <- {
 
     function onDeserialize( _in )
     {
-        local numEncounters = _in.readU32();
-        for( local i = 0; i < numEncounters; i = ++i ) {
-            local e = this.getEncounter(_in.readString());
-            if (e != null) {
-                e.onDeserialize(_in);
-            } else {
-                // this here has to be the same as encounter's onDeserialize, to skip all stored data
-                _in.readF32();
+        if (::ModEncounterManager.Mod.Serialization.isSavedVersionAtLeast("0.1.0", _in.getMetaData())) {
+            local numEncounters = _in.readU32();
+            for (local i = 0; i < numEncounters; i = ++i) {
+                local e = this.getEncounter(_in.readString());
+                if (e != null) {
+                    e.onDeserialize(_in);
+                } else {
+                    // this here has to be the same as encounter's onDeserialize, to skip all stored data
+                    _in.readF32();
+                }
             }
         }
     }
