@@ -13,7 +13,6 @@
      * Remove original bullshit from view implementation, keep it in business model classes
      */
     q.getUITerrain = @() function() {
-        ::logInfo("camp_screen.getUITerrain called");
         return this.World.Camp.getUITerrain();
     }
 
@@ -23,7 +22,6 @@
      * check town window implentation
      */
     q.getUIInformation = @() function() {
-        ::logInfo("camp_screen.getUIInformation called");
         local result = this.World.Camp.getUIInformation();
         result.Assets <- this.queryAssetsInformation();
         return result;
@@ -33,7 +31,6 @@
      * This is dirty little hack, but it's actually camp class that should call it, not the other way around
      */
     q.show = @(__original) function() {
-        ::logInfo("camp_screen.show called");
         this.World.Camp.onEnter();
         __original();
     }

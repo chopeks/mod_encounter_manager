@@ -94,9 +94,9 @@
         if (::ModEncounterManager.Mod.Serialization.isSavedVersionAtLeast("0.1.1", _in.getMetaData())) {
             this.m.SettlementEncountersCooldownUntil = _in.readF32();
             local size = _in.readU32();
-            for( local i = 0; i < size; i = ++i ) {
+            for(local i = 0; i < size; i++) {
                 local e = this.World.Encounters.getEncounter(_in.readString());
-                if (e != null) {
+                if(e != null) {
                     this.m.SettlementEncounters.push(e);
                 }
             }

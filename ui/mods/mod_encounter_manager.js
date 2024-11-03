@@ -19,7 +19,6 @@ WorldTownScreen.prototype.notifyBackendEncounterClicked = function (_data) {
  */
 WorldTownScreenMainDialogModule.prototype.updateEncounters = function (_data)
 {
-    console.error("2 is it called? updateEncounters");
     var content = this.mDialogContainer.findDialogContentContainer();
 
     for (var i = 0; i < 10; ++i) {
@@ -47,7 +46,6 @@ WorldTownScreenMainDialogModule.prototype.updateEncounters = function (_data)
  * @param _content html
  */
 WorldTownScreenMainDialogModule.prototype.createEncounter = function (_data, _i, _content) {
-    console.error("2 is it called? createEncounter");
     if (_data == null) {
         return;
     }
@@ -68,7 +66,6 @@ WorldTownScreenMainDialogModule.prototype.createEncounter = function (_data, _i,
 //region town hooks
 mod_encounter_manager.Hooks.town_loadEncountersFromData = WorldTownScreenMainDialogModule.prototype.loadFromData;
 WorldTownScreenMainDialogModule.prototype.loadFromData = function (_data){
-    console.error("2 is it called? loadFromData");
     mod_encounter_manager.Hooks.town_loadEncountersFromData.call(this, _data);
     if ('Encounters' in _data && _data['Encounters'] !== null) {
         this.updateEncounters(_data);

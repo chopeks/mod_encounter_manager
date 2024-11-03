@@ -7,7 +7,6 @@
      * Updates encounters in the camp.
      */
     q.updateEncounters <- function() {
-        ::logInfo("camp_manager.updateEncounters called");
         if (this.m.CampEncountersCooldownUntil > this.Time.getVirtualTimeF()) {
             local notValid = [];
             foreach (e in this.m.CampEncounters) {
@@ -46,7 +45,6 @@
      * Adds a check on settlement enter, to check if it should show event.
      */
     q.onEnter <- function () {
-        ::logInfo("camp_manager.onEnter called");
         this.updateEncounters();
         return true;
     }
@@ -55,7 +53,6 @@
      * Callback function for UI, called on encounter icon click
      */
     q.onEncounterClicked <- function(_i, _townScreen){
-        ::logInfo("camp_manager.onEncounterClicked called");
         this.World.Encounters.fireCampEncounter(this.m.CampEncounters[_i]);
         this.m.CampEncounters.remove(_i);
     }
@@ -64,7 +61,6 @@
      * This stuff should be implemented in camp class, not UI class as of current state
      */
     q.getUITerrain <- function() {
-        ::logInfo("camp_manager.getUITerrain called");
         local tile = this.World.State.getPlayer().getTile();
         local terrain = [];
         terrain.resize(this.Const.World.TerrainType.COUNT, 0);
@@ -110,7 +106,6 @@
      * This stuff should be implemented in camp class, not UI class as of current state
      */
     q.getUIInformation <- function() {
-        ::logInfo("camp_manager.getUIInformation called");
         local night = !this.World.getTime().IsDaytime;
         local highest = this.getUITerrain();
         local foreground = this.Const.World.TerrainCampImages[highest].Foreground;
@@ -151,13 +146,16 @@
         }
 
         // original function end, add mod stuff
-        result.Encounters <- [];
-        foreach(encounter in this.m.CampEncounters) {
-            if (encounter != null) {
-                result.Encounters.push({
-                    Icon = encounter.m.Icon,
-                    Type = encounter.getType(),
-                });
+        local isEscorting = this.World.State.m.EscortedEntity != null && !this.World.State.m.EscortedEntity.isNull();
+        if (!isEscorting) {
+            result.Encounters <- [];
+            foreach(encounter in this.m.CampEncounters) {
+                if (encounter != null) {
+                    result.Encounters.push({
+                        Icon = encounter.m.Icon,
+                        Type = encounter.getType(),
+                    });
+                }
             }
         }
         return result;
@@ -177,7 +175,7 @@
         if (::ModEncounterManager.Mod.Serialization.isSavedVersionAtLeast("0.1.2", _in.getMetaData())) {
             this.m.CampEncountersCooldownUntil = _in.readF32();
             local size = _in.readU32();
-            for( local i = 0; i < size; i = ++i ) {
+            for(local i = 0; i < size; i++) {
                 local e = this.World.Encounters.getEncounter(_in.readString());
                 if (e != null) {
                     this.m.CampEncounters.push(e);
